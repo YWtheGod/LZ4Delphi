@@ -56,8 +56,7 @@ type
   private
     FOwnsStream: Boolean;
     _eof : boolean;
-    _buf2 : Pointer;
-    _bufSize,_bufPos2,_bufSize2 : NativeUInt;
+    _bufSize : NativeUInt;
     DCTX : PLZ4F_dctx;
   public
     constructor Create(source: TStream; OwnsStream: Boolean=false);
@@ -290,7 +289,6 @@ begin
   inherited Create(source);
   FOwnsStream := OwnsStream;
   DCTX := Context.GetDCTX;
-  _Buf2 := GetBuffer512;
   _eof := false;
 end;
 
@@ -298,7 +296,6 @@ destructor TLZ4DecompressStream.Destroy;
 begin
   if FOwnsStream then
     FStream.Free;
-  FreeBuffer512(_buf2);
   Context.FreeDCTX(DCTX);
   inherited;
 end;
@@ -312,24 +309,19 @@ end;
 
 function TLZ4DecompressStream.Read(var buffer; count: Longint): Longint;
 var dst : PByte;
-    t,r,s : NativeInt;
+    t,r,s,w : NativeInt;
 begin
   Dst := @buffer;
   Result := 0;
   while (count>0) do
-    if _bufPos2<_bufSize2 then begin
-      if count>_bufSize2-_bufPos2 then s := _bufSize2-_bufPos2 else s := count;
-      memmove(Dst,PByte(_Buf2)+_BufPos2,s);
-      inc(_bufPos2,s);
-      inc(Dst,s);
-      dec(Count,s);
-      inc(total_in,s);
-      inc(Result,s);
-    end else if _bufPos<_bufSize then begin
-      _bufSize2 := 512*1024; r := _bufSize-_bufPos;
-      t := LZ4F_decompress(DCTX,_buf2,@_bufSize2,PByte(_buf)+_bufPos,@r,nil);
+    if _bufPos<_bufSize then begin
+      w := count; r := _bufSize-_bufPos;
+      t := LZ4F_decompress(DCTX,Dst,@w,PByte(_buf)+_bufPos,@r,nil);
       if LZ4F_isError(t)<>0 then raise Exception.Create(LZ4F_getErrorName(t));
-      _bufPos2 := 0;
+      inc(total_in,w);
+      dec(count,w);
+      inc(Dst,w);
+      inc(Result,w);
       inc(_bufPos,r);
       inc(total_out,r);
     end else if _eof then break
