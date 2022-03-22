@@ -271,31 +271,31 @@ const
     reserved: (0,0,0);
   );
 
-  function LZ4_versionNumber(): Integer;
-  {$IFDEF WIN32}inline;function _LZ4_versionNumber(): Integer;{$ENDIF} cdecl;
-    external liblz4 name _PU + 'LZ4_versionNumber';
-
-  function LZ4_versionString(): PUTF8Char;
-  {$IFDEF WIN32}inline;function _LZ4_versionString(): PUTF8Char;{$ENDIF} cdecl;
-    external liblz4 name _PU + 'LZ4_versionString';
-
-  (*! LZ4_compress_default() :
-   *  Compresses 'srcSize' bytes from buffer 'src'
-   *  into already allocated 'dst' buffer of size 'dstCapacity'.
-   *  Compression is guaranteed to succeed if 'dstCapacity' >= LZ4_compressBound(srcSize).
-   *  It also runs faster, so it's a recommended setting.
-   *  If the function cannot compress 'src' into a more limited 'dst' budget,
-   *  compression stops *immediately*, and the function result is zero.
-   *  In which case, 'dst' content is undefined (invalid).
-   *      srcSize : max supported value is LZ4_MAX_INPUT_SIZE.
-   *      dstCapacity : size of buffer 'dst' (which must be already allocated)
-   *     @return  : the number of bytes written into buffer 'dst' (necessarily <= dstCapacity)
-   *                or 0 if compression fails
-   * Note : This function is protected against buffer overflow scenarios (never writes outside 'dst' buffer, nor read outside 'source' buffer).
-   *)
-  function LZ4_compress_default(const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; dstCapacity: Integer): Integer;
-  {$IFDEF WIN32}inline;function _LZ4_compress_default(const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; dstCapacity: Integer): Integer;{$ENDIF}cdecl;
-    external liblz4 name _PU + 'LZ4_compress_default';
+//  function LZ4_versionNumber(): Integer;
+//  {$IFDEF WIN32}inline;function _LZ4_versionNumber(): Integer;{$ENDIF} cdecl;
+//    external liblz4 name _PU + 'LZ4_versionNumber';
+//
+//  function LZ4_versionString(): PUTF8Char;
+//  {$IFDEF WIN32}inline;function _LZ4_versionString(): PUTF8Char;{$ENDIF} cdecl;
+//    external liblz4 name _PU + 'LZ4_versionString';
+//
+//  (*! LZ4_compress_default() :
+//   *  Compresses 'srcSize' bytes from buffer 'src'
+//   *  into already allocated 'dst' buffer of size 'dstCapacity'.
+//   *  Compression is guaranteed to succeed if 'dstCapacity' >= LZ4_compressBound(srcSize).
+//   *  It also runs faster, so it's a recommended setting.
+//   *  If the function cannot compress 'src' into a more limited 'dst' budget,
+//   *  compression stops *immediately*, and the function result is zero.
+//   *  In which case, 'dst' content is undefined (invalid).
+//   *      srcSize : max supported value is LZ4_MAX_INPUT_SIZE.
+//   *      dstCapacity : size of buffer 'dst' (which must be already allocated)
+//   *     @return  : the number of bytes written into buffer 'dst' (necessarily <= dstCapacity)
+//   *                or 0 if compression fails
+//   * Note : This function is protected against buffer overflow scenarios (never writes outside 'dst' buffer, nor read outside 'source' buffer).
+//   *)
+//  function LZ4_compress_default(const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; dstCapacity: Integer): Integer;
+//  {$IFDEF WIN32}inline;function _LZ4_compress_default(const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; dstCapacity: Integer): Integer;{$ENDIF}cdecl;
+//    external liblz4 name _PU + 'LZ4_compress_default';
 
   (*! LZ4_decompress_safe() :
    *  compressedSize : is the exact complete size of the compressed block.
@@ -1182,9 +1182,9 @@ implementation
   {$ENDIF}
   {$ENDIF}
   {$IFDEF WIN32}
-  function LZ4_versionNumber;begin exit(_LZ4_versionNumber)end;
-  function LZ4_versionString;begin exit(LZ4_versionString)end;
-  function LZ4_compress_default;begin exit(_LZ4_compress_default(src,dst,srcSize,dstCapacity))end;
+//  function LZ4_versionNumber;begin exit(_LZ4_versionNumber)end;
+//  function LZ4_versionString;begin exit(LZ4_versionString)end;
+//  function LZ4_compress_default;begin exit(_LZ4_compress_default(src,dst,srcSize,dstCapacity))end;
   function LZ4_decompress_safe;begin exit(_LZ4_decompress_safe(src,dst,compressedSize,dstCapacity))end;
   function LZ4_compressBound;begin exit(_LZ4_compressBound(inputSize))end;
   function LZ4_compress_fast;begin exit(_LZ4_compress_fast(src,dst,srcSize,dstCapacity,acceleration))end;

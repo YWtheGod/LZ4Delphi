@@ -30,7 +30,7 @@ type
     _buf : Pointer;
     _bufPos : NativeUInt;
     total_in, total_out : NativeInt;
-  protected
+  public
     constructor Create(stream: TStream);
     destructor Destroy; override;
   end;
@@ -309,7 +309,7 @@ end;
 
 function TLZ4DecompressStream.Read(var buffer; count: Longint): Longint;
 var dst : PByte;
-    t,r,s,w : NativeInt;
+    t,r,w : NativeInt;
 begin
   Dst := @buffer;
   Result := 0;
