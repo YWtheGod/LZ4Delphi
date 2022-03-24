@@ -255,7 +255,11 @@ begin
   while count>0 do begin
     if (_bufpos>0)or(count<256*1024) then begin
       s := count; if s>256*1024-_bufpos then s:= 256*1024-_bufpos;
+      {$IFDEF POSIX}
+      move(source^,(PByte(_buf)+_bufPos)^,s);
+      {$ELSE}
       memmove(PByte(_buf)+_bufPos,source,s);
+      {$ENDIF}
       inc(_bufPos,s);
       dec(count,s);
       inc(source,s);
