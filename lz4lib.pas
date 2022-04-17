@@ -1172,7 +1172,8 @@ const
     external {$IFDEF POSIX}liblz4{$ENDIF} name _PU + 'LZ4F_decompress_usingDict';
 implementation
   {$IFDEF MSWINDOWS}
-  uses LIBC;
+//  uses libucrt;
+  uses libc;
   {$ENDIF}
   {$IFDEF WIN64}
   {$IFDEF AVX2}
@@ -1290,3 +1291,5 @@ implementation
     Result := 65536+14+mbs;
   end;
   end.
+
+
